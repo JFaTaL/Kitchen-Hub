@@ -1,3 +1,4 @@
+import java.text.SimpleDateFormat;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Date;
@@ -7,15 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.CallableStatement;
 
-public class main {
+public class main extends boughtItemsTable{
+    
+    private static final SimpleDateFormat dateFormat 
+                   = new SimpleDateFormat("dd/MM/yyyy");
 
-    public static void main(String[] args) {
-
-        String[] test = {"milk", "bread", "fish"};
-        for (int i = 0; i < test.length; i++){
-            cart.addToCart(test[i]);
-        }
-        
-
-    }
 }

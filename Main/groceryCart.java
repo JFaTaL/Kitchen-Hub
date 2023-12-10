@@ -15,11 +15,14 @@ public class groceryCart {
             cart.add(prodsToAdd);
         }
 
+    
+
+    public void printCart() {
+        System.out.println(cart);
     }
 
-    public static void printCart() {
-        System.out.println();
+    public LinkedList<String> GetCart() {
+        return cart;
     }
-
 
 }

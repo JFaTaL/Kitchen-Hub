@@ -6,6 +6,27 @@
     "configurations": [
         {
             "type": "java",
+            "name": "boughtItemsTable",
+            "request": "launch",
+            "mainClass": "boughtItemsTable",
+            "projectName": "data-structures-team-2-final-project_7ec43503"
+        },
+        {
+            "type": "java",
+            "name": "boughtItemsTable",
+            "request": "launch",
+            "mainClass": "boughtItemsTable",
+            "projectName": "data-structures-team-2-final-project_c30babc9"
+        },
+        {
+            "type": "java",
+            "name": "main",
+            "request": "launch",
+            "mainClass": "main",
+            "projectName": "data-structures-team-2-final-project_c30babc9"
+        },
+        {
+            "type": "java",
             "name": "main",
             "request": "launch",
             "mainClass": "main",
