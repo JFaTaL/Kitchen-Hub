@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "groceryCart",
+            "request": "launch",
+            "mainClass": "groceryCart",
+            "projectName": "data-structures-team-2-final-project_24dd604a"
+        },
+        {
+            "type": "java",
             "name": "boughtItemsTable",
             "request": "launch",
             "mainClass": "boughtItemsTable",

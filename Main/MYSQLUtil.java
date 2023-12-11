@@ -11,15 +11,16 @@ public class MYSQLUtil {
         Connection conn = null;
 
         try {
-            String url = "";
+            String url = "jdbc:mysql://localhost:3306/finalproject";        
             String user = "root";
-            String password = "";
+            String password = "finalproject123";
+
 
             conn = DriverManager.getConnection(url, user, password);
 
             
         } catch(SQLException e) {
-                System.out.println(e.getMessage())
+                System.out.println(e.getMessage());
         }
         return conn;
         

@@ -35,7 +35,7 @@ public class boughtItemsTable {
             testExpDates.add(date);
         }
 
-        LinkedList<String> testCart = cart.GetCart();
+        LinkedList<String> testCart = cart.getCart();
 
         
         cart.printCart();
