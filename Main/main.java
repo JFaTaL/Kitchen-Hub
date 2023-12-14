@@ -15,7 +15,21 @@ public class main{
         groceryCart groceryCart = new groceryCart();
         Scanner scanner = new Scanner(System.in);
 
-        groceryCart.createNewCart();
+        System.out.print("Enter your cart ID (or 0 to skip): ");
+        int loadCartID = scanner.nextInt();
+        scanner.nextLine();  // Consume the newline character
+
+        if (loadCartID != 0) {
+            // Load cart data if a cart ID is provided
+            groceryCart.loadCartData(loadCartID);
+
+            // Display the loaded cart data
+            System.out.println("Loaded cart data for Cart ID: " + loadCartID);
+            groceryCart.printCart();
+        } else {
+            System.out.println("Skipping cart loading. Starting with a new cart.");
+            groceryCart.createNewCart();
+        }
 
         while (true) {
             System.out.println("Choose an option:");

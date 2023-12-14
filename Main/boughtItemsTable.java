@@ -53,7 +53,7 @@ public class boughtItemsTable {
                 }
                 
                 // Ask for expiration date
-                System.out.print("Enter expiration date (or type 'skip' to skip): ");
+                System.out.print("Enter expiration date [YYYY-MM-DD] (or type 'skip' to skip): ");
                 String expirationDate = scanner.nextLine();
 
                 // Update quantities and expirationDates maps
@@ -101,7 +101,8 @@ public class boughtItemsTable {
     
                     // Extract the numeric part from the string before parsing
                     String priceString = parts[3].split(": ")[1];
-                    double price = Double.parseDouble(priceString.substring(0, priceString.indexOf(" ")));
+                    String numericPart = priceString.replaceAll("[^0-9.]", ""); // Remove non-numeric characters
+                    double price = Double.parseDouble(numericPart);
     
                     preparedStatement.setInt(1, cartID);
                     preparedStatement.setInt(2, productID);

@@ -30,6 +30,32 @@ public class groceryCart {
         cart.add(productName);
     }
 
+    public void loadCartData(int cartID) {
+        try (Connection connection = MYSQLUtil.getConnection()) {
+            String query = "SELECT productName, Quantity, Price FROM ShoppingCart WHERE cartID = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, cartID);
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    // Clear the existing cart before loading new data
+                    cart.clear();
+
+                    while (resultSet.next()) {
+                        String productName = resultSet.getString("productName");
+                        int quantity = resultSet.getInt("Quantity");
+                        double price = resultSet.getDouble("Price");
+
+                        // Construct the cart item string and add it to the cart
+                        String cartItem = "Product: " + productName + ", Quantity: " + quantity + ", Price: $" + price;
+                        addToCart(cartItem);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     // Method to print the cart along with total and item count
     public void printCart() {
         double total = 0; // Initialize total within the method
