@@ -1,36 +1,31 @@
-import java.text.SimpleDateFormat;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.Scanner;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.CallableStatement;
 
-public class main{
+public class main {
     public static void main(String[] args) {
+        // Initialize necessary objects and variables
         cartIDManager cartIDManager = new cartIDManager();
         groceryCart groceryCart = new groceryCart();
         Scanner scanner = new Scanner(System.in);
 
+        // Prompt the user to enter a cart ID or skip loading
         System.out.print("Enter your cart ID (or 0 to skip): ");
         int loadCartID = scanner.nextInt();
         scanner.nextLine();  // Consume the newline character
 
+        // Load cart data if a cart ID is provided; otherwise, start with a new cart
         if (loadCartID != 0) {
             // Load cart data if a cart ID is provided
-            groceryCart.loadCartData(loadCartID);
+            cartLoader.printLoadedData(loadCartID);
 
             // Display the loaded cart data
             System.out.println("Loaded cart data for Cart ID: " + loadCartID);
-            groceryCart.printCart();
         } else {
             System.out.println("Skipping cart loading. Starting with a new cart.");
             groceryCart.createNewCart();
         }
 
+        // Main application loop
         while (true) {
             System.out.println("Choose an option:");
             System.out.println("1. Search for products");
@@ -41,9 +36,10 @@ public class main{
             int choice = scanner.nextInt();
             scanner.nextLine();  // Consume the newline character
 
-            
+            // Switch based on user choice
             switch (choice) {
                 case 1:
+                    // Search for products
                     groceryCart.displaySearchOptions();
                     break;
 
@@ -59,6 +55,7 @@ public class main{
                     boughtItemsTable.confirmPurchasedItems(groceryCart);
                     boughtItemsTable.displayPurchasedItems();
                     boughtItemsTable.savePurchasedItems(Integer.toString(cartIDManager.getCartID()));
+
                     // Save the cart to the database
                     LinkedList<String> cartItemsList = new LinkedList<>(boughtItemsTable.quantities.keySet());
                     String cartItems = boughtItemsTable.serializeCart(cartItemsList);
@@ -77,8 +74,6 @@ public class main{
                 default:
                     System.out.println("Invalid choice. Please choose 1, 2, 3, or 4.");
             }
-
         }
     }
 }
-            
