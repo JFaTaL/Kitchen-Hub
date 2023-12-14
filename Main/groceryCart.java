@@ -2,7 +2,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -11,6 +13,9 @@ import java.util.regex.Pattern;
 public class groceryCart {
     private LinkedList<String> cart = new LinkedList<>();
     private int currentCartID;
+    private String selectedDepartment;
+    private Map<String, Integer> quantities = new HashMap<>();
+    private Map<String, String> expirationDates = new HashMap<>();
 
     public void createNewCart() {
         currentCartID = cartIDManager.createCartID();
@@ -240,11 +245,15 @@ public class groceryCart {
                         String department = resultSet.getString("department");
                         System.out.println(department);
                     }
-
+    
                     Scanner scanner = new Scanner(System.in);
                     System.out.print("Enter department: ");
                     String selectedDepartment = scanner.next();
-                    searchByDepartment(selectedDepartment);
+                    if (!selectedDepartment.isEmpty()) {
+                        searchByDepartment(selectedDepartment);
+                    } else {
+                        System.out.println("Invalid department. Returning to the main menu.");
+                    }
                 }
             }
         } catch (SQLException e) {
@@ -257,22 +266,64 @@ public class groceryCart {
             String query = "SELECT * FROM Products WHERE department = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, department);
-
+    
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     int optionNumber = 1;
+                    Map<Integer, String> productOptions = new HashMap<>();
+    
                     while (resultSet.next()) {
-                        // Customize this part based on your needs
                         int productId = resultSet.getInt("productID");
                         String productNameResult = resultSet.getString("productName");
                         double productPrice = resultSet.getDouble("productPrice");
-
+    
                         System.out.println(optionNumber + ". Product ID: " + productId + ", Name: " + productNameResult + ", Price: " + productPrice);
+                        productOptions.put(optionNumber, productNameResult);
                         optionNumber++;
+                    }
+    
+                    // Prompt the user to select an item
+                    Scanner scanner = new Scanner(System.in);
+                    System.out.print("Enter the number of the item you want to add to the cart (or 0 to skip): ");
+                    int selectedOption = scanner.nextInt();
+                    scanner.nextLine();  // Consume the newline character
+    
+                    if (selectedOption > 0 && productOptions.containsKey(selectedOption)) {
+                        // Call the addToCartByDepartment method with the selected product name
+                        addToCartByDepartment(productOptions.get(selectedOption));
                     }
                 }
             }
         } catch (SQLException e) {
-        e.printStackTrace();
+            e.printStackTrace();
+        }
+    }
+
+    public void addToCartByDepartment(String productName) {
+        try (Connection connection = MYSQLUtil.getConnection()) {
+            String query = "SELECT * FROM Products WHERE productName = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, productName);
+    
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                        int productId = resultSet.getInt("productID");
+                        
+                        // Prompt the user to enter the quantity
+                        Scanner scanner = new Scanner(System.in);
+                        System.out.print("Enter quantity to add to the cart: ");
+                        int quantity = scanner.nextInt();
+                        scanner.nextLine();  // Consume the newline character
+    
+                        // Retrieve the details of the selected product
+                        String selectedProductDetails = getSelectedProductDetails(productId);
+    
+                        // Add the selected item to the cart
+                        addToCart(selectedProductDetails + " (Quantity: " + quantity + ")");
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

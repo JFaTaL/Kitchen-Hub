@@ -27,6 +27,7 @@ public class main{
             int choice = scanner.nextInt();
             scanner.nextLine();  // Consume the newline character
 
+            
             switch (choice) {
                 case 1:
                     groceryCart.displaySearchOptions();
@@ -44,6 +45,13 @@ public class main{
                     boughtItemsTable.confirmPurchasedItems(groceryCart);
                     boughtItemsTable.displayPurchasedItems();
                     boughtItemsTable.savePurchasedItems(Integer.toString(cartIDManager.getCartID()));
+                    // Save the cart to the database
+                    LinkedList<String> cartItemsList = new LinkedList<>(boughtItemsTable.quantities.keySet());
+                    String cartItems = boughtItemsTable.serializeCart(cartItemsList);
+                    int cartID = cartIDManager.getCartID();
+                    boughtItemsTable.savePurchasedItems(cartID, boughtItemsTable);
+                    groceryCart.getCart().clear();
+                    groceryCart.createNewCart();
                     break;
 
                 case 4:
@@ -55,66 +63,8 @@ public class main{
                 default:
                     System.out.println("Invalid choice. Please choose 1, 2, 3, or 4.");
             }
+
         }
     }
 }
-            /* 
-            while (true) {
-                // Search for products
-                System.out.println("Search for products:");
-                System.out.print("Enter product name or product ID: ");
-                String searchInput = scanner.nextLine();
-    
-                // Check if the user entered a numeric value (product ID)
-                if (searchInput.matches("\\d+")) {
-                    int productId = Integer.parseInt(searchInput);
-                    System.out.println("Searching for product by ID...");
-                    groceryCart.searchProductById(productId);
-                } else {
-                    System.out.println("Searching for products by name...");
-                    groceryCart.searchProductByName(searchInput);
-    
-                    // Prompt the user to select an item from the list
-                    System.out.print("Enter the number of the item you want to add to the cart (or 0 to skip): ");
-                    int selectedOption = scanner.nextInt();
-                    scanner.nextLine();  // Consume the newline character
-    
-                    if (selectedOption > 0) {
-                        // Add the selected item to the cart
-                        System.out.print("Enter quantity to add to the cart: ");
-                        int quantity = scanner.nextInt();
-                        scanner.nextLine();  // Consume the newline character
-    
-                        // Add the selected item to the cart
-                        groceryCart.addToCartByOption(searchInput, selectedOption, quantity);
-                    }
-                }
-    
-                // Ask the user if they want to perform another search
-                System.out.print("Do you want to perform another search? (yes/no): ");
-                String performAnotherSearchInput = scanner.nextLine();
-    
-                if (!performAnotherSearchInput.equalsIgnoreCase("yes")) {
-                    break;
-                }
-            }
-    
-            // Display the final cart
-            System.out.println("Your final cart: ");
-            groceryCart.printCart(); 
             
-            // Confirm purchased items
-            System.out.print("Do you want to confirm purchased items? (yes/no): ");
-            String confirmPurchasedItemsInput = scanner.nextLine();
-    
-            if (confirmPurchasedItemsInput.equalsIgnoreCase("yes")) {
-                boughtItemsTable boughtItemsTable = new boughtItemsTable();
-                boughtItemsTable.confirmPurchasedItems(groceryCart);
-                boughtItemsTable.displayPurchasedItems();
-                boughtItemsTable.savePurchasedItems(Integer.toString(cartID.getCartID()));
-            }
-            scanner.close();
-        }
-    }
-}
-*/
