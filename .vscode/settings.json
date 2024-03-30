@@ -1,0 +1,25 @@
+{
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.debug.settings.onBuildFailureProceed": true,
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "finalproject",
+            "database": "finalproject",
+            "username": "root",
+            "password": "finalproject123",
+            "connectionTimeout": 15
+        }
+    ],
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "/Users/james/Documents/mysql-connector-j-8.2.0/mysql-connector-j-8.2.0.jar"
+    ]
+}
